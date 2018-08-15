@@ -1,0 +1,33 @@
+<apex:page controller="LinkedinController">
+    <br/>
+    <apex:slds />
+    <apex:form id="theForm">
+        <apex:actionstatus id="statusLinkdln">
+            <apex:facet name="start">
+                <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb; height:100%;opacity:0.65;width:100%;">
+                    <div class="waitingHolder" style="top: 100px; width: 91px;">
+                        <img class="waitingImage" src="downloads/spinner-gif-17.gif" title="Please Wait..." />
+                        <span class="waitingDescription">Loading...</span>
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionstatus>
+        <apex:pagemessages >
+        </apex:pagemessages>
+        <apex:pageBlock >
+            <apex:pageBlockButtons location="top" >
+                <apex:commandButton value="Connect With Linkedln" action="{!doGetAuthorizationCode}"
+                                    />
+                <apex:commandButton value="Complete Authorization" action="{!doGetAccessToken}"
+                                    rendered="{!!isCode}" rerender="theForm" status="statusLinkdln" />
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+        <apex:pageBlock >
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Get Basic Info" action="{!fetchUserDetails}"
+                                    status="statusLinkdln" rerender="theForm, thePanel" />
+                
+            </apex:pageBlockButtons>
+        </apex:pageBlock> 
+    </apex:form>
+</apex:page>
