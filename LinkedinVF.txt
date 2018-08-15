@@ -1,6 +1,5 @@
 <apex:page controller="LinkedinController">
     <br/>
-    <apex:slds />
     <apex:form id="theForm">
         <apex:actionstatus id="statusLinkdln">
             <apex:facet name="start">
@@ -16,16 +15,13 @@
         </apex:pagemessages>
         <apex:pageBlock >
             <apex:pageBlockButtons location="top" >
-                <apex:commandButton value="Connect With Linkedln" action="{!doGetAuthorizationCode}"
-                                    />
-                <apex:commandButton value="Complete Authorization" action="{!doGetAccessToken}"
-                                    rendered="{!!isCode}" rerender="theForm" status="statusLinkdln" />
+                <apex:commandButton value="Connect With Linkedln" action="{!getAuthorizationCode}" />
+                <apex:commandButton value="Complete Authorization" action="{!getAccessToken}" />
             </apex:pageBlockButtons>
         </apex:pageBlock>
         <apex:pageBlock >
             <apex:pageBlockButtons location="top">
-                <apex:commandButton value="Get Basic Info" action="{!fetchUserDetails}"
-                                    status="statusLinkdln" rerender="theForm, thePanel" />
+                <apex:commandButton value="Get Basic Info" action="{!fetchUserDetails}" />
                 
             </apex:pageBlockButtons>
         </apex:pageBlock> 

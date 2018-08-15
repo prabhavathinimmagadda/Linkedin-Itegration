@@ -10,11 +10,9 @@ public class LinkedinController{
     public Final String consumerKey = '78fky05ecc17ae'; // Your Client Id here
     public Final String consumerSecret ='iAOrYujPgX8rFWj0'; // Your Client Secr
     public Final String redirect_URI = 'https://pcomm-dev-ed--c.na50.visual.force.com/apex/LinkedinVF?core.apexpages.request.devconsole=1'; // VF page preview URL
-    public String linkedln_Scope = 'r_fullprofile%20r_emailaddress';
-    public Final String linkedln_AuthUrl = 'https://www.linkedin.com/oauth/v2/authorization?';
+   	public Final String linkedln_AuthUrl = 'https://www.linkedin.com/oauth/v2/authorization?';
     public Final String accessToken_Endpoint = 'https://www.linkedin.com/uas/oauth/v2/accessToken';
-    public string access_token = 'AQVFXHEPDKilCikyfnGfcfnpsVG4L5Ajbo72VC_LrvAfCSETewzrfkUREAVJbnk-oSkXellaUrAYCHgqevay6OQoRM8ncc6oWCVekbI0eAmfh62L1cUqjq93JViOtc4AR_Yp0zorXMe0nhnfiUSNA2D6qrwy1vC-5hbOGf08dC7zeiU8Iar-EuwE6d9QE5BzoGbbs9lclddtJ7PCv-v8YmTW-vA8MhgkLN1TZ_A0IeXnEhVtqttB-74UHGMtKozt7u0CsOrO9p8Pe7wh2SfxWCbyrJ6MTxDUGtgOqRZrKrmb_9hisbAyifd-BTI7VyJ0MFZMrhf9TV55jW8aoTPRXoqbhE041g';
-    
+       
     
     public LinkedinController(){
         authCodeFromURL = ApexPages.currentPage().getParameters().get('code');
@@ -27,14 +25,14 @@ public class LinkedinController{
         
     }
     
-    public PageReference doGetAuthorizationCode(){
+    public PageReference getAuthorizationCode(){
         String requestoAuthURL = linkedln_AuthUrl +'response_type=code&client_id='+consumerKey+'&redirect_uri='+redirect_URI+
             '&state=DCEeFWf45A53sdfKef424';
         PageReference pageRef = new PageReference(requestoAuthURL);
         return pageRef;
     }
     
-    public void doGetAccessToken(){
+    public void getAccessToken(){
         
         Http http = new Http();
         HttpRequest httpReq = new HttpRequest();
@@ -50,8 +48,7 @@ public class LinkedinController{
         
         String errorMessage = '';
         
-        System.debug('#### authCodeFromURL '+authCodeFromURL);
-        System.debug('#### requestTokenBody '+requestTokenBody);
+        System.debug('requestTokenBody #### '+requestTokenBody);
         
         httpReq.setMethod('POST');
         httpReq.setEndpoint(requestTokenBody);
@@ -74,8 +71,7 @@ public class LinkedinController{
                     linkedlnInfo.Id = linkedlnInfoList[0].Id;
                 }
                 
-                ApexPages.addmessage(new ApexPages.message(ApexPages.severity.CONFIRM, 
-                                                           'You have done successful Integration with Linkedln'));
+                ApexPages.addmessage(new ApexPages.message(ApexPages.severity.CONFIRM,'You have done successful Integration with Linkedln'));
                 upsert linkedlnInfo;
                 
             }else{
@@ -84,7 +80,7 @@ public class LinkedinController{
                 ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR, errorMessage));
             }
         }catch(System.Exception e){
-            System.debug('#### Exception Occured '+e.getStackTraceString()+'  '+e.getMessage());
+            System.debug('Exception Occured #### '+e.getStackTraceString()+'  '+e.getMessage());
             if(String.valueOf(e.getMessage()).startsWith('Unauthorized endpoint')){
                 errorMessage =  'Unauthorize endpoint: An Administer must go to Setup -> Administer -> Security Control ->'
                     +' Remote Site Setting and add '+' '+ accessToken_Endpoint +' Endpoint';
@@ -140,7 +136,7 @@ public class LinkedinController{
         }
         }
         catch(System.Exception e){
-            System.debug('#### Exception Occured '+e.getStackTraceString()+'  '+e.getMessage());
+            System.debug('Exception Occured #### '+e.getStackTraceString()+'  '+e.getMessage());
             if(String.valueOf(e.getMessage()).startsWith('List index out of bounds')){
                String errorMessage =  'User did not allow to access the basic information';
                 ApexPages.addMessage(new ApexPages.message(ApexPages.severity.ERROR, errorMessage));
